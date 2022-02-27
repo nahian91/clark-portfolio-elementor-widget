@@ -246,9 +246,14 @@ final class Clark_Common_Extension {
 	public function init_widgets() {
 
 		require_once( __DIR__ . '/widgets/clark-slider.php' );
+		require_once( __DIR__ . '/widgets/clark-heading.php' );
+		require_once( __DIR__ . '/widgets/clark-about.php' );
+		require_once( __DIR__ . '/widgets/clark-resume.php' );
 
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Clark_Slider_Widget() );
-
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Clark_Heading_Widget() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Clark_About_Widget() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Clark_Resume_Widget() );
 	}
 
 	/**
