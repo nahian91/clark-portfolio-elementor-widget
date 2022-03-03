@@ -250,12 +250,16 @@ final class Clark_Common_Extension {
 		require_once( __DIR__ . '/widgets/clark-about.php' );
 		require_once( __DIR__ . '/widgets/clark-resume.php' );
 		require_once( __DIR__ . '/widgets/clark-services.php' );
+		require_once( __DIR__ . '/widgets/clark-skills.php' );
+		require_once( __DIR__ . '/widgets/clark-projects.php' );
 
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Clark_Slider_Widget() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Clark_Heading_Widget() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Clark_About_Widget() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Clark_Resume_Widget() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Clark_Services_Widget() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Clark_Skills_Widget() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new \Clark_Projects_Widget() );
 	}
 
 	/**
