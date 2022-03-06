@@ -1,12 +1,12 @@
 <?php
 /**
- * Clark Projects Widget.
+ * Clark Price Widget.
  *
  * Elementor widget that inserts heading into the page
  *
  * @since 1.0.0
  */
-class Clark_Projects_Widget extends \Elementor\Widget_Base {
+class Clark_Price_Widget extends \Elementor\Widget_Base {
 
 	/**
 	 * Get widget name.
@@ -19,7 +19,7 @@ class Clark_Projects_Widget extends \Elementor\Widget_Base {
 	 * @return string Widget name.
 	 */
 	public function get_name() {
-		return 'clark-projects';
+		return 'clark-price';
 	}
 
 	/**
@@ -33,7 +33,7 @@ class Clark_Projects_Widget extends \Elementor\Widget_Base {
 	 * @return string Widget title.
 	 */
 	public function get_title() {
-		return esc_html__( 'Clark Projects', 'clark-elementor' );
+		return esc_html__( 'Clark Price', 'clark-elementor' );
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Clark_Projects_Widget extends \Elementor\Widget_Base {
 	 * @return string Widget icon.
 	 */
 	public function get_icon() {
-		return 'eicon-product-categories';
+		return 'eicon-price-table';
 	}
 
 	/**
@@ -83,75 +83,98 @@ class Clark_Projects_Widget extends \Elementor\Widget_Base {
 		   
 		    ]
 	    );
-
-		$options = [];
-
-		$posts = get_posts( [
-			'post_type'  => 'projects',
-		] );
-
-		foreach ( $posts as $post ) {
-			$options[ $post->ID ] = $post->post_title;
-		}
-
-		$this->add_control(
-			'select_projects',
-			[
-				'label' => esc_html__( 'Select Projects', 'plugin-name' ),
-				'type' => \Elementor\Controls_Manager::SELECT2,
-				'multiple' => true,
-				'options' => $options
-			]
-		);
 		
 		$this->add_control(
-			'heading_title', [
-				'label' => esc_html__( 'Heading Title', 'clark-elementor' ),
+			'price_title', [
+				'label' => esc_html__( 'Price Title', 'clark-elementor' ),
 				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => esc_html__( 'About Me' , 'clark-elementor' ),
-				'label_block' => true,
+				'default' => esc_html__( 'Standard' , 'clark-elementor' ),
 			]
 		);
 
 		$this->add_control(
-			'heading_subtitle', [
-				'label' => esc_html__( 'Heading Subtitle', 'clark-elementor' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => esc_html__( 'About' , 'clark-elementor' ),
-				'label_block' => true,
-			]
-		);
-
-		$this->add_control(
-			'heading_desc', [
-				'label' => esc_html__( 'Heading Title', 'clark-elementor' ),
-				'type' => \Elementor\Controls_Manager::TEXTAREA,
-				'default' => esc_html__( 'A small river named Duden flows by their place and supplies it with the necessary regelialia.' , 'clark-elementor' ),
-				'label_block' => true,
-			]
-		);
-
-		$this->add_control(
-			'heading_align',
+			'price_symbol',
 			[
-				'label' => esc_html__( 'Alignment', 'clark-elementor' ),
-				'type' => \Elementor\Controls_Manager::CHOOSE,
+				'label' => esc_html__( 'Price Symbol', 'clark-elementor' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => '$',
 				'options' => [
-					'left' => [
-						'title' => esc_html__( 'Left', 'clark-elementor' ),
-						'icon' => 'eicon-text-align-left',
-					],
-					'center' => [
-						'title' => esc_html__( 'Center', 'clark-elementor' ),
-						'icon' => 'eicon-text-align-center',
-					],
-					'right' => [
-						'title' => esc_html__( 'Right', 'clark-elementor' ),
-						'icon' => 'eicon-text-align-right',
-					],
+					'$'  => '$',
+					'£'  => '£',
+					'¥'  => '¥',
+					'€'  => '€',
 				],
-				'default' => 'center',
-				'toggle' => true,
+				'separator' => 'before'
+			]
+		);
+
+		$this->add_control(
+			'price_amount',
+			[
+				'label' => esc_html__( 'Price Amount', 'clark-elementor' ),
+				'type' => \Elementor\Controls_Manager::NUMBER,
+				'default' => 199,
+				'separator' => 'before'
+			]
+		);
+
+		$this->add_control(
+			'price_duration',
+			[
+				'label' => esc_html__( 'Price Symbol', 'clark-elementor' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'month',
+				'options' => [
+					'month'  => 'Month',
+					'yearly'  => 'Yearly',
+				],			
+				'separator' => 'before'
+			]
+		);
+
+		$repeater = new \Elementor\Repeater();
+
+		$repeater->add_control(
+			'price_feature_title', [
+				'label' => esc_html__( 'Feature Title', 'clark-elementor' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( 'Feature Title' , 'clark-elementor' ),
+				'label_block' => true,
+			]
+		);
+
+		$this->add_control(
+			'price_feature',
+			[
+				'label' => esc_html__( 'Price Feature List', 'clark-elementor' ),
+				'type' => \Elementor\Controls_Manager::REPEATER,
+				'fields' => $repeater->get_controls(),
+				'title_field' => '{{{ price_feature_title }}}',
+			]
+		);
+
+		$this->add_control(
+			'price_btn_text',
+			[
+				'label' => esc_html__( 'Price Button Text', 'clark-elementor' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( 'Buy Now', 'clark-elementor' )
+			]
+		);
+
+		$this->add_control(
+			'price_btn_url',
+			[
+				'label' => esc_html__( 'Price Button URL', 'clark-elementor' ),
+				'type' => \Elementor\Controls_Manager::URL,
+				'placeholder' => esc_html__( 'https://your-link.com', 'clark-elementor' ),
+				'default' => [
+					'url' => '',
+					'is_external' => true,
+					'nofollow' => true,
+					'custom_attributes' => '',
+				],
+				'separator' => 'before'
 			]
 		);
 		
@@ -267,35 +290,38 @@ class Clark_Projects_Widget extends \Elementor\Widget_Base {
 	protected function render() {
 		// get our input from the widget settings.
 		$settings = $this->get_settings_for_display();
-		$select_projects = $settings['select_projects'];		
+		$price_title = $settings['price_title'];
+		$price_symbol = $settings['price_symbol'];
+		$price_amount = $settings['price_amount'];
+		$price_duration = $settings['price_duration'];
+		$price_feature = $settings['price_feature'];
+		$price_btn_text = $settings['price_btn_text'];
+		$price_btn_url = $settings['price_btn_url'];		
 	?>
-
-		<div class="row">
-			<?php
-				foreach($select_projects as $project){
-
-				$project_img = get_the_post_thumbnail_url($project);
-				$project_cat = get_the_category($project);
-			?>
-				<div class="col-md-4">
-					<div class="project img ftco-animate d-flex justify-content-center align-items-center" style="background-image: url(<?php echo $project_img;?>);">
-						<div class="overlay"></div>
-						<div class="text text-center p-4">
-							<h3><a href="<?php the_permalink($project);?>"><?php echo get_the_title($project);?></a></h3>
-							<?php
-								foreach($project_cat as $cat) {
-							?>
-								<span><?php echo $cat->name;?></span>
-							<?php
-								}
-							?>
-						</div>
-					</div>
-				</div>
-			<?php
-				}
-			?>
-    	</div>
+		<div class="ftco_single_price_table">
+			<div class="price_header">
+				<h2><?php echo $price_title;?></h2>
+			</div>
+			<div class="price_tag">
+				<h3>
+				<small><?php echo $price_symbol;?></small><?php echo $price_amount;?>
+				</h3>
+				<span>/ <?php echo $price_duration;?></span>
+			</div>
+			<div class="price_content">
+				<ul>
+					<?php foreach($price_feature as $feature) {					
+				?>
+					<li><?php echo $feature['price_feature_title'];?></li>
+				<?php
+					}
+				?>
+				</ul>
+			</div>
+			<div class="price_bottom">
+				<a href="<?php echo $price_btn_url['url'];?>" class="btn btn-primary py-4 px-5"><?php echo $price_btn_text;?></a>
+			</div>
+			</div>
        <?php
 	}
 }
